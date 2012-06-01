@@ -15,7 +15,7 @@ Coming Soon
 
 ### Manually
 
-Just include the StatsD.cs and the StatsDConfigurationSection.cs files in your project. 
+Just include the Client.cs and the StatsDConfigurationSection.cs files in your project. 
 Add the following to your config's configSections node.
 	<section name="statsD" type="NStatsD.StatsDConfigurationSection, NStatsD.Client" />
 Then add the following to your app config's configuration node.
