@@ -1,0 +1,15 @@
+#OS junk files
+[Tt]humbs.db
+*.DS_Store
+
+#Visual Studio files
+[Oo]bj
+[Bb]in
+Site/bin/*
+Site/obj/*
+*.ReSharper.user
+*.suo
+_ReSharper.*/
+
+#Nuget
+*.nupkg
