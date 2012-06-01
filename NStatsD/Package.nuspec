@@ -13,6 +13,6 @@
     <tags>NStatsD statsd</tags>
   </metadata>
   <files>
-    <file src="NuGet\Content\*.*" target="Content" /> 
+    <file src="\NuGet\Content\*.*" target="Content" /> 
   </files>
 </package>
