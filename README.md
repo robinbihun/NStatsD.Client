@@ -17,20 +17,23 @@ This client will let you fire stats at your StatsD server from a .NET applicatio
 
 Just include the Client.cs and the StatsDConfigurationSection.cs files in your project. 
 Add the following to your config's configSections node.
-	&lt;section name="statsD" type="NStatsD.StatsDConfigurationSection, NStatsD.Client" /&gt;
+```xml
+	<section name="statsD" type="NStatsD.StatsDConfigurationSection, NStatsD.Client" />
+```
 Then add the following to your app config's configuration node.
-	&lt;statsD&gt;
-		&lt;server host="localhost" port="8125" /&gt;
-	&lt;/statsD&gt;
-
+```xml
+	<statsD>
+		<server host="localhost" port="8125" />
+	</statsD>
+```
 ## Usage
-
+```csharp
 	NStatsD.Client.Current.Increment("testing.increment");
 	NStatsD.Client.Current.Increment("testing.increment", 0.5); // Optional Sample Rate included on all methods
 	NStatsD.Client.Current.Decrement("testing.decrement");
 	NStatsD.Client.Current.Timing("testing.timing", 2345);
 	NStatsD.Client.Current.Guage("testing.guage", 45);
-	
+```
 # License
 
 NStatsD.Client is licensed under the MIT license.
