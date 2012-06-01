@@ -11,7 +11,7 @@ This client will let you fire stats at your StatsD server from a .NET applicatio
 
 ### Nuget
 
-Coming Soon
+	Nuget Install NStatsD.Client
 
 ### Manually
 
