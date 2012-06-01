@@ -17,11 +17,11 @@ This client will let you fire stats at your StatsD server from a .NET applicatio
 
 Just include the Client.cs and the StatsDConfigurationSection.cs files in your project. 
 Add the following to your config's configSections node.
-	<section name="statsD" type="NStatsD.StatsDConfigurationSection, NStatsD.Client" />
+	&lt;section name="statsD" type="NStatsD.StatsDConfigurationSection, NStatsD.Client" /&gt;
 Then add the following to your app config's configuration node.
-	<statsD>
-		<server host="localhost" port="8125" />
-	</statsD>
+	&lt;statsD&gt;
+		&lt;server host="localhost" port="8125" /&gt;
+	&lt;/statsD&gt;
 
 ## Usage
 
