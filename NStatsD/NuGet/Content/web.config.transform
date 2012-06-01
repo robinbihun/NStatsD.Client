@@ -1,0 +1,9 @@
+<configuration>
+  <configSections>
+    <section name="statsD" type="StatsD.StatsDConfigurationSection, StatsD.Client" />
+  </configSections>
+
+  <statsD>
+    <server host="192.168.1.105" port="8125" />
+  </statsD>
+</configuration>
