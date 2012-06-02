@@ -30,7 +30,7 @@ namespace NStatsD
             }
         }
 
-        public void Timing(string stat, int time, double sampleRate = 1)
+        public void Timing(string stat, long time, double sampleRate = 1)
         {
             var data = new Dictionary<string, string> { { stat, string.Format("{0}|ms", time) } };
 
@@ -50,14 +50,12 @@ namespace NStatsD
         public void Guage(string stat, int value, double sampleRate = 1)
         {
             var data = new Dictionary<string, string> {{stat, string.Format("{0}|g", value)}};
-
             Send(data, sampleRate);
         }
 
         public void UpdateStats(string stat, int delta = 1, double sampleRate = 1)
         {
             var dictionary = new Dictionary<string, string> {{stat, string.Format("{0}|c", delta)}};
-            Console.WriteLine(dictionary[stat]);
             Send(dictionary, sampleRate);
         }
 
@@ -84,11 +82,15 @@ namespace NStatsD
                 {
                     var encoding = new System.Text.ASCIIEncoding();
                     var stringToSend = string.Format("{0}:{1}", stat, sampledData[stat]);
-                    Console.WriteLine(stringToSend);
                     var sendData = encoding.GetBytes(stringToSend);
-                    client.Send(sendData, sendData.Length);
+                    client.BeginSend(sendData, sendData.Length, Callback, null);
                 }
             }
+        }
+
+        private static void Callback(IAsyncResult result)
+        {
+            // dont really want to do anything here since, would rather miss metrics than cause a site/app failure
         }
     }
 }
