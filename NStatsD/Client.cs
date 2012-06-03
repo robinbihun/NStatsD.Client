@@ -47,7 +47,7 @@ namespace NStatsD
             UpdateStats(stat, -1, sampleRate);
         }
 
-        public void Guage(string stat, int value, double sampleRate = 1)
+        public void Gauge(string stat, int value, double sampleRate = 1)
         {
             var data = new Dictionary<string, string> {{stat, string.Format("{0}|g", value)}};
             Send(data, sampleRate);
