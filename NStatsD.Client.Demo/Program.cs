@@ -12,7 +12,7 @@ namespace Demo
             NStatsD.Client.Current.Increment("test.increment");
             NStatsD.Client.Current.Decrement("test.decrement");
             NStatsD.Client.Current.Timing("test.increment", timer.ElapsedMilliseconds);
-            NStatsD.Client.Current.Guage("test.guage", 25);
+            NStatsD.Client.Current.Gauge("test.gauge", 25);
 
             Console.Read();
         }

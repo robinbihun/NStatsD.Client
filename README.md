@@ -32,7 +32,7 @@ NStatsD.Client.Current.Increment("testing.increment");
 NStatsD.Client.Current.Increment("testing.increment", 0.5); // Optional Sample Rate included on all methods
 NStatsD.Client.Current.Decrement("testing.decrement");
 NStatsD.Client.Current.Timing("testing.timing", 2345);
-NStatsD.Client.Current.Guage("testing.guage", 45);
+NStatsD.Client.Current.Gauge("testing.gauge", 45);
 ```
 # License
 
