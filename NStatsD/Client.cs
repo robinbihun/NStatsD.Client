@@ -59,12 +59,20 @@ namespace NStatsD
             Send(dictionary, sampleRate);
         }
 
+        [ThreadStatic]
+        private static Random _random = new Random();
+
         private void Send(Dictionary<string, string> data, double sampleRate = 1)
         {
-            var random = new Random();
-            var sampledData = new Dictionary<string, string>();
-            if (sampleRate < 1 && random.Next(0, 1) <= sampleRate)
+            if (Config == null)
             {
+              return;
+            }
+
+            Dictionary<string, string> sampledData;
+            if (sampleRate < 1 && _random.Next(0, 1) <= sampleRate)
+            {
+                sampledData = new Dictionary<string, string>();
                 foreach (var stat in data.Keys)
                 {
                     sampledData.Add(stat, string.Format("{0}|@{1}", data[stat], sampleRate));
@@ -74,6 +82,7 @@ namespace NStatsD
             {
                 sampledData = data;
             }
+
             var host = Config.Server.Host;
             var port = Config.Server.Port;
             using (var client = new UdpClient(host, port))
