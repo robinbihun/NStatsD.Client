@@ -30,38 +30,38 @@ namespace NStatsD
             }
         }
 
-        public void Timing(string stat, long time, double sampleRate = 1)
+        public void Timing(string stat, long time, double sampleRate = 1, AsyncCallback callback = null)
         {
             var data = new Dictionary<string, string> { { stat, string.Format("{0}|ms", time) } };
 
-            Send(data, sampleRate);
+            Send(data, sampleRate, callback);
         }
 
-        public void Increment(string stat, double sampleRate = 1)
+        public void Increment(string stat, double sampleRate = 1, AsyncCallback callback = null)
         {
-            UpdateStats(stat, 1, sampleRate);
+            UpdateStats(stat, 1, sampleRate, callback);
         }
 
-        public void Decrement(string stat, double sampleRate = 1)
+        public void Decrement(string stat, double sampleRate = 1, AsyncCallback callback = null)
         {
-            UpdateStats(stat, -1, sampleRate);
+            UpdateStats(stat, -1, sampleRate, callback);
         }
 
-        public void Gauge(string stat, int value, double sampleRate = 1)
+        public void Gauge(string stat, int value, double sampleRate = 1, AsyncCallback callback = null)
         {
             var data = new Dictionary<string, string> {{stat, string.Format("{0}|g", value)}};
-            Send(data, sampleRate);
+            Send(data, sampleRate, callback);
         }
 
-        public void UpdateStats(string stat, int delta = 1, double sampleRate = 1)
+        public void UpdateStats(string stat, int delta = 1, double sampleRate = 1, AsyncCallback callback = null)
         {
             var dictionary = new Dictionary<string, string> {{stat, string.Format("{0}|c", delta)}};
-            Send(dictionary, sampleRate);
+            Send(dictionary, sampleRate, callback);
         }
 
         private readonly Random _random = new Random();
 
-        private void Send(Dictionary<string, string> data, double sampleRate = 1, AsyncCallback callback = null)
+        private void Send(Dictionary<string, string> data, double sampleRate, AsyncCallback callback)
         {
             if (Config == null)
             {
