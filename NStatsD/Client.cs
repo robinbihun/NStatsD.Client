@@ -8,7 +8,7 @@ namespace NStatsD
 {
     public sealed class Client
     {
-        static Client() { }
+        Client() { }
 
         public static Client Current
         {
