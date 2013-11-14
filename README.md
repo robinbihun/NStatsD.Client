@@ -1,6 +1,6 @@
 # NStatsD.Client
 
-A .NET 4.0 client for [Etsy](http://etsy.com)'s [StatsD](https://github.com/etsy/statsd) server.
+The Simpliest .NET 4.0+ client for [Etsy](http://etsy.com)'s [StatsD](https://github.com/etsy/statsd) server.
 
 This client will let you fire stats at your StatsD server from a .NET application. Very useful for mixed technology systems that you would like to keep near real-time stats on.
 
@@ -8,6 +8,12 @@ This client will let you fire stats at your StatsD server from a .NET applicatio
 .NET 4.0 (Websocket support)
 
 ## Installation
+
+### Nuget
+
+```
+PM> Install-Package NStatsD.Client
+```
 
 ### Manually
 
