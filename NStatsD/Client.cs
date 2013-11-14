@@ -30,6 +30,13 @@ namespace NStatsD
             }
         }
 
+        /// <summary>
+        /// Sends timing data to the StatsD server.
+        /// </summary>
+        /// <param name="stat">The metric that was timed.</param>
+        /// <param name="time">The timing it took to complete.</param>
+        /// <param name="sampleRate">Tells StatsD how often to sample this value. Defaults to 1 (send all values).</param>
+        /// <param name="callback">A callback for when the send is complete. Defaults to null.</param>
         public void Timing(string stat, long time, double sampleRate = 1, AsyncCallback callback = null)
         {
             var data = new Dictionary<string, string> { { stat, string.Format("{0}|ms", time) } };
@@ -37,23 +44,42 @@ namespace NStatsD
             Send(data, sampleRate, callback);
         }
 
+        /// <summary>
+        /// Increases a count on the StatsD server by 1.
+        /// </summary>
+        /// <param name="stat">The metric to keep count of.</param>
+        /// <param name="sampleRate">Tells StatsD how often to sample this value. Defaults to 1 (send all values).</param>
+        /// <param name="callback">A callback for when the send is complete. Defaults to null.</param>
         public void Increment(string stat, double sampleRate = 1, AsyncCallback callback = null)
         {
             UpdateStats(stat, 1, sampleRate, callback);
         }
 
+        /// <summary>
+        /// Decreases a count on the StatsD server by 1.
+        /// </summary>
+        /// <param name="stat">The metric to keep count of.</param>
+        /// <param name="sampleRate">Tells StatsD how often to sample this value. Defaults to 1 (send all values).</param>
+        /// <param name="callback">A callback for when the send is complete. Defaults to null.</param>
         public void Decrement(string stat, double sampleRate = 1, AsyncCallback callback = null)
         {
             UpdateStats(stat, -1, sampleRate, callback);
         }
 
+        /// <summary>
+        /// Allows an arbitrary metric to be measured
+        /// </summary>
+        /// <param name="stat">The metric to keep value of.</param>
+        /// <param name="value">The value of the metric.</param>
+        /// <param name="sampleRate">Tells StatsD how often to sample this value. Defaults to 1 (send all values).</param>
+        /// <param name="callback">A callback for when the send is complete. Defaults to null.</param>
         public void Gauge(string stat, int value, double sampleRate = 1, AsyncCallback callback = null)
         {
             var data = new Dictionary<string, string> {{stat, string.Format("{0}|g", value)}};
             Send(data, sampleRate, callback);
         }
 
-        public void UpdateStats(string stat, int delta = 1, double sampleRate = 1, AsyncCallback callback = null)
+        private void UpdateStats(string stat, int delta = 1, double sampleRate = 1, AsyncCallback callback = null)
         {
             var dictionary = new Dictionary<string, string> {{stat, string.Format("{0}|c", delta)}};
             Send(dictionary, sampleRate, callback);
