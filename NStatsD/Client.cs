@@ -105,29 +105,32 @@ namespace NStatsD
 
         private void Send(Dictionary<string, string> data, double sampleRate, AsyncCallback callback)
         {
-            var sampledData = new Dictionary<string, string>();
             if (sampleRate < 1)
             {
                 var nextRand = _random.NextDouble();
                 if (nextRand <= sampleRate)
                 {
-                    sampledData = data.Keys.ToDictionary(stat => stat,
+                    var sampledData = data.Keys.ToDictionary(stat => stat,
                         stat => string.Format("{0}|@{1}", data[stat], sampleRate));
+                    SendToStatsD(sampledData, callback);
                 }
             }
             else
             {
-                sampledData = data;
+                SendToStatsD(data, callback);
             }
+        }
 
+        private void SendToStatsD(Dictionary<string, string> sampledData, AsyncCallback callback)
+        {
             var host = Config.Server.Host;
             var port = Config.Server.Port;
             using (var client = new UdpClient(host, port))
             {
                 foreach (var sendData in from stat in sampledData.Keys
-                                         let encoding = new System.Text.ASCIIEncoding()
-                                         let stringToSend = string.Format("{0}:{1}", stat, sampledData[stat])
-                                         select encoding.GetBytes(stringToSend))
+                    let encoding = new System.Text.ASCIIEncoding()
+                    let stringToSend = string.Format("{0}:{1}", stat, sampledData[stat])
+                    select encoding.GetBytes(stringToSend))
                 {
                     client.BeginSend(sendData, sendData.Length, callback, null);
                 }
