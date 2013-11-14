@@ -1,32 +1,32 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Linq;
 using System.Net.Sockets;
 
 namespace NStatsD
 {
-    public class Client
+    public sealed class Client
     {
-        private static Client _current;
+        static Client() { }
+
         public static Client Current
         {
-            get
-            {
-                if (_current == null)
-                    _current = new Client();
-                return _current;
-            }
-            set { _current = value; }
+            get { return CurrentClient.Instance; }
         }
 
+        class CurrentClient
+        {
+            static CurrentClient() {  }
+
+            internal static readonly Client Instance = new Client();
+        }
+        
         private StatsDConfigurationSection _config;
         public StatsDConfigurationSection Config
         {
-            get
-            {
-                if (_config == null)
-                    _config = (StatsDConfigurationSection)ConfigurationManager.GetSection("statsD");
-                return _config;
+            get {
+                return _config ?? (_config = (StatsDConfigurationSection) ConfigurationManager.GetSection("statsD"));
             }
         }
 
@@ -59,10 +59,9 @@ namespace NStatsD
             Send(dictionary, sampleRate);
         }
 
-        [ThreadStatic]
-        private static Random _random = new Random();
+        private readonly Random _random = new Random();
 
-        private void Send(Dictionary<string, string> data, double sampleRate = 1)
+        private void Send(Dictionary<string, string> data, double sampleRate = 1, AsyncCallback callback = null)
         {
             if (Config == null)
             {
@@ -70,13 +69,10 @@ namespace NStatsD
             }
 
             Dictionary<string, string> sampledData;
-            if (sampleRate < 1 && _random.Next(0, 1) <= sampleRate)
+            var nextRand = _random.NextDouble();
+            if (sampleRate < 1 && nextRand <= sampleRate)
             {
-                sampledData = new Dictionary<string, string>();
-                foreach (var stat in data.Keys)
-                {
-                    sampledData.Add(stat, string.Format("{0}|@{1}", data[stat], sampleRate));
-                }
+                sampledData = data.Keys.ToDictionary(stat => stat, stat => string.Format("{0}|@{1}", data[stat], sampleRate));
             }
             else
             {
@@ -87,19 +83,14 @@ namespace NStatsD
             var port = Config.Server.Port;
             using (var client = new UdpClient(host, port))
             {
-                foreach (var stat in sampledData.Keys)
+                foreach (var sendData in from stat in sampledData.Keys 
+                                         let encoding = new System.Text.ASCIIEncoding() 
+                                         let stringToSend = string.Format("{0}:{1}", stat, sampledData[stat]) 
+                                         select encoding.GetBytes(stringToSend))
                 {
-                    var encoding = new System.Text.ASCIIEncoding();
-                    var stringToSend = string.Format("{0}:{1}", stat, sampledData[stat]);
-                    var sendData = encoding.GetBytes(stringToSend);
-                    client.BeginSend(sendData, sendData.Length, Callback, null);
+                    client.BeginSend(sendData, sendData.Length, callback, null);
                 }
             }
-        }
-
-        private static void Callback(IAsyncResult result)
-        {
-            // dont really want to do anything here since, would rather miss metrics than cause a site/app failure
         }
     }
 }
