@@ -4,6 +4,13 @@ namespace NStatsD
 {
     public class StatsDConfigurationSection : ConfigurationSection
     {
+        [ConfigurationProperty("enabled", DefaultValue = "true", IsRequired = false)]
+        public bool Enabled
+        {
+            get { return (bool) this["enabled"]; }
+            set { this["enabled"] = value; }
+        }
+        
         [ConfigurationProperty("server")]
         public ServerElement Server
         {
