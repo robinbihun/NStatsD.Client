@@ -24,7 +24,8 @@ Add the following to your config's configSections node.
 ```
 Then add the following to your app config's configuration node.
 ```xml
-<statsD>
+<!-- the enabled attribute is optional, defaults to true. If set to false, will not send metrics to statsd server -->
+<statsD enabled="true">
 	<server host="localhost" port="8125" />
 </statsD>
 ```
