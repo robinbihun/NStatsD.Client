@@ -105,6 +105,9 @@ namespace NStatsD
 
         private void Send(Dictionary<string, string> data, double sampleRate, AsyncCallback callback)
         {
+            if (!Config.Enabled)
+                return;
+                
             if (sampleRate < 1)
             {
                 var nextRand = _random.NextDouble();
