@@ -46,10 +46,7 @@
     <Compile Include="StatsDConfigurationSection.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="app.config.transform">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="web.config.transform">
+    <Content Include="config.transform">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
