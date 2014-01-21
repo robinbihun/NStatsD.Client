@@ -9,10 +9,11 @@
     <projectUrl>https://github.com/robbihun/NStatsD.Client</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>A .NET 4.0 client for Etsy's StatsD server.</description>
-    <copyright>Copyright 2012</copyright>
-    <tags>NStatsD statsd</tags>
+    <copyright>Copyright 2014</copyright>
+    <tags>NStatsD statsd .NET graphite</tags>
   </metadata>
   <files>
-    <file src="\NuGet\Content\*.*" target="Content" /> 
+	  <file src="config.transform" target="content\app.config.transform"/>
+	  <file src="config.transform" target="content\web.config.transform"/>
   </files>
 </package>
