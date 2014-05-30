@@ -1,4 +1,5 @@
 # NStatsD.Client
+[![Build status](https://ci.appveyor.com/api/projects/status/hmkuii0cec36wfnf)](https://ci.appveyor.com/project/robbihun/nstatsd-client)
 
 The Simpliest .NET 4.0+ client for [Etsy](http://etsy.com)'s [StatsD](https://github.com/etsy/statsd) server.
 
