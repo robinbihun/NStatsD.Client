@@ -24,6 +24,11 @@ namespace NStatsD
             get { return (string)this["prefix"]; }
             set { this["prefix"] = value; }
         }
+
+        public override bool IsReadOnly()
+        {
+            return false;
+        }
     }
 
     
