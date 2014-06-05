@@ -35,8 +35,21 @@ namespace NStatsD
                 if (_config == null)
                     throw new ConfigurationErrorsException("statsD Configuration is not present.");
 
+                _config.Prefix = ValidatePrefix(_config.Prefix);
+
                 return _config;
             }
+        }
+
+        private string ValidatePrefix(string prefix) 
+        {
+            if (string.IsNullOrWhiteSpace(prefix))
+                return prefix;
+
+            if (prefix.EndsWith("."))
+                return prefix;
+                
+            return string.Format("{0}.", prefix);
         }
 
         /// <summary>
@@ -128,13 +141,15 @@ namespace NStatsD
         {
             var host = Config.Server.Host;
             var port = Config.Server.Port;
+            var prefix = Config.Prefix;
+            var encoding = new System.Text.ASCIIEncoding();
+
             using (var client = new UdpClient(host, port))
             {
-                foreach (var sendData in from stat in sampledData.Keys
-                    let encoding = new System.Text.ASCIIEncoding()
-                    let stringToSend = string.Format("{0}:{1}", stat, sampledData[stat])
-                    select encoding.GetBytes(stringToSend))
+                foreach (var stat in sampledData.Keys)
                 {
+                    var stringToSend = string.Format("{0}{1}:{2}", prefix, stat, sampledData[stat]);
+                    var sendData =  encoding.GetBytes(stringToSend);
                     client.BeginSend(sendData, sendData.Length, callback, null);
                 }
             }

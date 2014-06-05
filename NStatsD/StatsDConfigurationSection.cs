@@ -17,6 +17,13 @@ namespace NStatsD
             get { return (ServerElement) this["server"]; }
             set { this["server"] = value; }
         }
+
+        [ConfigurationProperty("prefix", DefaultValue = "", IsRequired = false)]
+        public string Prefix
+        {
+            get { return (string)this["prefix"]; }
+            set { this["prefix"] = value; }
+        }
     }
 
     
