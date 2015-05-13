@@ -47,6 +47,11 @@ namespace NStatsD
 
                 return _config;
             }
+            set
+            {
+                _config = value;
+                _config.Prefix = ValidatePrefix(_config.Prefix);
+            }
         }
 
         private string ValidatePrefix(string prefix)
